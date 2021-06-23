@@ -17,6 +17,7 @@
     "require": {
         "php": ">=8.0",
         "doctrine/orm": "*",
-        "doctrine/doctrine-bundle": "^2.4"
+        "doctrine/doctrine-bundle": "^2.4",
+        "symfony/flex": "^1.13"
     }
 }
