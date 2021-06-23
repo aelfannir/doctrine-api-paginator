@@ -227,10 +227,8 @@ class ApiServiceEntityRepository extends ServiceEntityRepository
             $QB->leftJoin("$rootAlias.$table","$relationAlias");
             $QB->addSelect($relationAlias);
             //
-            $nestedJoin = $relation['join'];
-            if ($nestedJoin) {
-                $this->join($QB, $nestedJoin, $relationAlias);
-            }
+            $nestedJoin = $relation['join'] ?? [];
+            $this->join($QB, $nestedJoin, $relationAlias);
         }
     }
 
