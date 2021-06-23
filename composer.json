@@ -13,6 +13,7 @@
       "role": "Software Engineer"
     }
   ],
+  "minimum-stability": "dev",
   "require": {
     "php": ">=8.0"
   }
