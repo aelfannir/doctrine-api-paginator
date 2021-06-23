@@ -1,4 +1,4 @@
 services:
-    doctrine_api_paginator.repository:
+    doctrine_query_paginator.repository:
         class: AElfannir\DoctrineQueryPaginator\Repositor\ServiceEntityRepository
     AElfannir\DoctrineQueryPaginator\Repository\ServiceEntityRepository: '@doctrine_query_paginator.repository'
