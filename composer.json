@@ -1,7 +1,7 @@
 {
     "name": "aelfannir/doctrine-api-paginator",
     "description": "Simple, powerful package for search, sort, filter & paginate database",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "autoload": {
         "psr-4": {
