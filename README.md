@@ -36,6 +36,6 @@ in the `config/bundles.php` file of your project:
 
 return [
     // ...
-    <vendor>\<bundle-name>\<bundle-long-name>::class => ['all' => true],
+    AElfannir\DoctrineQueryPaginator\DoctrineQueryPaginatorBundle::class => ['all' => true],
 ];
 ```
