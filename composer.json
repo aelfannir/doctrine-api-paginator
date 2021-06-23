@@ -14,5 +14,9 @@
             "email": "aelfannir@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=8.0",
+        "doctrine/orm": "*",
+        "doctrine/doctrine-bundle": "^2.4"
+    }
 }
