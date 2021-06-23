@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Aelfannir\DoctrineApiPaginator\Repository;
+namespace AElfannir\DoctrineQueryPaginator\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository as BaseServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class ApiServiceEntityRepository
+ * Class ServiceEntityRepository
  * @package App\Repository
  */
-class ApiServiceEntityRepository extends ServiceEntityRepository
+class ServiceEntityRepository extends BaseServiceEntityRepository
 {
     const COND_AND = 'AND';
     const COND_OR = 'OR';
@@ -61,7 +61,7 @@ class ApiServiceEntityRepository extends ServiceEntityRepository
     const RELATION_IS_NOT_NULL = 'RELATION.IS_NOT_NULL';
 
     /**
-     * ApiServiceEntityRepository constructor.
+     * ServiceEntityRepository constructor.
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)

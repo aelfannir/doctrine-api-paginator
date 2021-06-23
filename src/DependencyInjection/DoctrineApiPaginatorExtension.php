@@ -1,12 +1,12 @@
 <?php
-namespace Aelfannir\DoctrineApiPaginator\DependencyInjection;
+namespace AElfannir\DoctrineQueryPaginator\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class DoctrineApiPaginatorExtension extends Extension
+class DoctrineQueryPaginatorExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
