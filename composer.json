@@ -12,5 +12,8 @@
       "homepage": "https://chubby.ma",
       "role": "Software Engineer"
     }
-  ]
+  ],
+  "require": {
+    "php": ">=8.0"
+  }
 }
