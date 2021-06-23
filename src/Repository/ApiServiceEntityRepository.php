@@ -258,7 +258,7 @@ class ApiServiceEntityRepository extends ServiceEntityRepository
         $filter = $meta['filter'];
         $this->filter($QB, $filter, $alias);
         //search
-        $search = $meta['search'];
+        $search = $meta['search'] ?? '';
         $this->search($QB, $search, $alias);
 
         return $QB;
