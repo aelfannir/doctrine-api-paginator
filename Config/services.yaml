@@ -11,16 +11,16 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+        public: true
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-#    App\:
-#        resource: '../src/'
-#        exclude:
-#            - '../src/DependencyInjection/'
-#            - '../src/Entity/'
-#            - '../src/Kernel.php'
-#            - '../src/Tests/'
+    Aelfannir\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -40,9 +40,9 @@ services:
 #        class: JMS\Serializer\Naming\SerializedNameAnnotationStrategy
 #        arguments:
 #            - '@jms_serializer.identical_property_naming_strategy'
-    doctrine_api_pagaintion:
-        class: Aelfannir\DoctrineApiPaginator\Repositor\ApiServiceEntityRepository
-        public: true
+#    doctrine_api_pagaintion:
+#        class: Aelfannir\DoctrineApiPaginator\Repositor\ApiServiceEntityRepository
+#        public: true
 #    App\Listener\SerializationSubscriber:
 #        tags:
 #            - { name: 'jms_serializer.event_subscriber' }
