@@ -42,7 +42,8 @@ services:
 #            - '@jms_serializer.identical_property_naming_strategy'
     doctrine_api_paginator.repository:
         class: Aelfannir\DoctrineApiPaginator\Repositor\ApiServiceEntityRepository
-        public: true
+    Aelfannir\DoctrineApiPaginator\Repositor\ApiServiceEntityRepository: '@doctrine_api_paginator.repository'
+#        public: true
 #    App\Listener\SerializationSubscriber:
 #        tags:
 #            - { name: 'jms_serializer.event_subscriber' }
