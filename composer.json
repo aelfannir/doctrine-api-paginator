@@ -1,20 +1,18 @@
 {
-  "name": "aelfannir/doctrine-api-paginator",
-  "type": "library",
-  "description": "Simple, powerful package for search, sort, filter & paginate database",
-  "keywords": ["symfony","doctrine","api","paginator", "pagination", "filter", "sort", "search"],
-  "homepage": "https://chubby.ma",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Elfannir Abderrahmane",
-      "email": "aelfannir@gmail.com",
-      "homepage": "https://chubby.ma",
-      "role": "Software Engineer"
-    }
-  ],
-  "minimum-stability": "dev",
-  "require": {
-    "php": ">=8.0"
-  }
+    "name": "aelfannir/doctrine-api-paginator",
+    "description": "Simple, powerful package for search, sort, filter & paginate database",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Aelfannir\\DoctrineApiPaginator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Elfannir",
+            "email": "aelfannir@gmail.com"
+        }
+    ],
+    "require": {}
 }
