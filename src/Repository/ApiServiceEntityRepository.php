@@ -223,7 +223,7 @@ class ApiServiceEntityRepository extends ServiceEntityRepository
     {
         foreach ($join as $relation) {
             $table = $relation['table'];
-            $relationAlias = $relation['alias'];
+            $relationAlias = $relation['alias'] ?? $table;
             $QB->leftJoin("$rootAlias.$table","$relationAlias");
             $QB->addSelect($relationAlias);
             //
