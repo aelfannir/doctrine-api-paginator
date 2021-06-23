@@ -3,7 +3,7 @@
   "type": "library",
   "description": "Simple, powerful package for search, sort, filter & paginate database",
   "keywords": ["symfony","doctrine","api","paginator", "pagination", "filter", "sort", "search"],
-  "homepage": ".",
+  "homepage": "https://chubby.ma",
   "license": "MIT",
   "authors": [
     {
