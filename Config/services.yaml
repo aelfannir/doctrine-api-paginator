@@ -40,7 +40,7 @@ services:
 #        class: JMS\Serializer\Naming\SerializedNameAnnotationStrategy
 #        arguments:
 #            - '@jms_serializer.identical_property_naming_strategy'
-    doctrine_api_pagaintion.repository:
+    doctrine_api_paginator.repository:
         class: Aelfannir\DoctrineApiPaginator\Repositor\ApiServiceEntityRepository
         public: true
 #    App\Listener\SerializationSubscriber:
