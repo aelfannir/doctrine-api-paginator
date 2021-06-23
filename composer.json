@@ -1,11 +1,11 @@
 {
-    "name": "aelfannir/doctrine-api-paginator",
+    "name": "aelfannir/doctrine-query-paginator",
     "description": "Simple, powerful package for search, sort, filter & paginate database",
     "type": "symfony-bundle",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Aelfannir\\DoctrineApiPaginator\\": "src/"
+            "AElfannir\\DoctrineQueryPaginator\\": "src/"
         }
     },
     "authors": [
