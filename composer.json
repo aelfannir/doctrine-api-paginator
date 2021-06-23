@@ -1,0 +1,16 @@
+{
+  "name": "aelfannir/doctrine-api-paginator",
+  "type": "library",
+  "description": "Simple, powerful package for search, sort, filter & paginate database",
+  "keywords": ["symfony","doctrine","api","paginator", "pagination", "filter", "sort", "search"],
+  "homepage": ".",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Elfannir Abderrahmane",
+      "email": "aelfannir@gmail.com",
+      "homepage": ".",
+      "role": "Software Engineer"
+    }
+  ]
+}
