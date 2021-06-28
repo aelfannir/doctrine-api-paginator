@@ -71,9 +71,9 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
 
     /**
      * @param Expr $expr
-     * @param $alias
-     * @param $filter
-     * @param $paramKey
+     * @param string $alias
+     * @param array $filter
+     * @param string $paramKey
      * @return string
      */
     public function getFilterExp($expr, $alias, $filter, $paramKey)
@@ -144,6 +144,11 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
         };
     }
 
+    /**
+     * @param QueryBuilder $QB
+     * @param array $filter
+     * @param string $paramKey
+     */
     public function addParam(&$QB, $filter, $paramKey)
     {
         $operator = $filter['operator'];
@@ -213,12 +218,17 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
             $paramKey = "{$alias}_$fieldName";
             $expression = $QB->expr()->like("$alias.$fieldName", ":$paramKey");
             $QB
-                ->orWhere($expression)
+                ->andWhere($expression)
                 ->setParameter($paramKey, "%$search%")
             ;
         }
     }
 
+    /**
+     * @param QueryBuilder $QB
+     * @param array $join
+     * @param string $rootAlias
+     */
     public function join(&$QB, $join, $rootAlias)
     {
         foreach ($join as $relation) {
@@ -234,16 +244,23 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
 
     /**
      * @param QueryBuilder $QB
+     * @param array $sorts
+     * @param string $alias
      */
-    public function sort(&$QB, $sort, $alias)
+    public function sort(&$QB, $sorts, $alias)
     {
-        foreach ($sort as $item) {
-            $sortBy = $item['property'];
-            $sortDirection = $item['direction'];
+        foreach ($sorts as $sort) {
+            $sortBy = $sort['property'];
+            $sortDirection = $sort['direction'];
             $QB->addOrderBy("$alias.$sortBy", $sortDirection);
         }
     }
 
+    /**
+     * @param array $meta
+     * @param string $alias
+     * @return QueryBuilder
+     */
     public function createPaginateQueryBuilder($meta, $alias)
     {
         $QB = $this->createQueryBuilder($alias);
@@ -252,8 +269,8 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
         $join = $meta['join'];
         $this->join($QB, $join, $alias);
         //sort
-        $sort = $meta['sort'];
-        $this->sort($QB, $sort, $alias);
+        $sorts = $meta['sorts'];
+        $this->sort($QB, $sorts, $alias);
         //filters
         $filter = $meta['filter'];
         $this->filter($QB, $filter, $alias);
@@ -267,8 +284,6 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
     /**
      * @param array $meta
      * @return array
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function paginate($meta = []): array
     {
@@ -289,15 +304,10 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
                 ->setFirstResult($offset)
                 ->setMaxResults($perPage);
 
-//            dd($QB->getQuery()->getHydrationMode());
-//            $QB->getQuery()->setHydrationMode(AbstractQuery::HYDRATE_ARRAY);
-//            dd($QB->getQuery()->getResult());
-
             $paginator = new Paginator($QB);
             $total = $paginator->count();
             $pages = $total/$perPage;
             $pages = is_float($pages) ? (int)$pages+1 : $pages;
-
 
             $entities = [];
             foreach ($paginator as $entity) {
