@@ -59,6 +59,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
     const RELATION_NEQ = 'RELATION.NEQ';
     const RELATION_IS_NULL = 'RELATION.IS_NULL';
     const RELATION_IS_NOT_NULL = 'RELATION.IS_NOT_NULL';
+    const DEFAULT_PER_PAGE = 200;
 
     /**
      * ServiceEntityRepository constructor.
@@ -297,9 +298,9 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
             $QB = $this->createPaginateQueryBuilder($meta, $alias);
 
             //pagination
-            $pagination = $meta['pagination'];
-            $perPage = $pagination['perPage'];
-            $page = $pagination['page'];
+            $pagination = $meta['pagination'] ?? [];
+            $perPage = $pagination['perPage'] ?? self::DEFAULT_PER_PAGE;
+            $page = $pagination['page'] ?? 1;
             $offset = max(0, ($page - 1) * $perPage);
             $QB
                 ->setFirstResult($offset)
