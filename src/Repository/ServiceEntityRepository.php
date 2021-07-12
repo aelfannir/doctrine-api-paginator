@@ -74,9 +74,9 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param string $alias
      * @param array $filter
      * @param string $paramKey
-     * @return string
+     * @return Expr\Comparison
      */
-    public function getFilterExp(Expr $expr, string $alias, array $filter, string $paramKey): string
+    public function getFilterExp(Expr $expr, string $alias, array $filter, string $paramKey): Expr\Comparison
     {
         $operator = $filter['operator'];
         $property = $alias.'.'.$filter['property'];
