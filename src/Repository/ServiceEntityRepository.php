@@ -80,7 +80,10 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
     public function getFilterExp(Expr $expr, string $alias, array $filter, string $paramKey): Expr\Comparison
     {
         $operator = $filter['operator'];
-        $property = $alias.'.'.$filter['property'];
+        $property = $filter['property'];
+        if (! strpos($property, '.')) {
+            $property = $alias.'.'.$property;
+        }
 
         return match ($operator) {
             self::STRING_EQ,
@@ -189,6 +192,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
         $this->addParam($QB, $filter, $paramKey);
         $filterExpression = $this->getFilterExp($expr, $alias, $filter, $paramKey);
 
+
         if ($cond === self::COND_OR) {
             $QB->orWhere($filterExpression);
         } else {
@@ -204,7 +208,10 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
             foreach ($compoundFilters as $i=>$filter) {
                 $property = $filter['property'];
                 if ($property) {
-                    $paramKey = $alias.'_'.str_replace('.','_', $property).'_'.$i;
+                    $paramKey = str_replace('.','_', "$property.$i");
+                    if (! strpos($property, '.')) {
+                        $paramKey = $alias.'_'.$paramKey;
+                    }
                     $this->addWhere($QB, $alias, $filter, $filterOperator, $paramKey);
                 } else {
                     $this->filter($QB, $metaFilter, $alias);
@@ -215,13 +222,15 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
 
     public function search(&$QB, $search, $alias)
     {
-        foreach ($this->getClassMetadata()->getFieldNames() as $fieldName){
-            $paramKey = "{$alias}_$fieldName";
-            $expression = $QB->expr()->like("$alias.$fieldName", ":$paramKey");
-            $QB
-                ->andWhere($expression)
-                ->setParameter($paramKey, "%$search%")
-            ;
+        if ($search) {
+            foreach ($this->getClassMetadata()->getFieldNames() as $fieldName){
+                $paramKey = "{$alias}_$fieldName";
+                $expression = $QB->expr()->like("$alias.$fieldName", ":$paramKey");
+                $QB
+                    ->andWhere($expression)
+                    ->setParameter($paramKey, "%$search%")
+                ;
+            }
         }
     }
 
@@ -272,9 +281,11 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
         //sort
         $sorts = $meta['sorts'] ?? [];
         $this->sort($QB, $sorts, $alias);
+
         //filters
         $filter = $meta['filter'] ?? null;
         $this->filter($QB, $filter, $alias);
+
         //search
         $search = $meta['search'] ?? '';
         $this->search($QB, $search, $alias);
