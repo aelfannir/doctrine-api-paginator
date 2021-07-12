@@ -204,7 +204,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
             foreach ($compoundFilters as $i=>$filter) {
                 $property = $filter['property'];
                 if ($property) {
-                    $paramKey = $alias.'_'.$property.'_'.$i;
+                    $paramKey = $alias.'_'.str_replace('.','_', $property).'_'.$i;
                     $this->addWhere($QB, $alias, $filter, $filterOperator, $paramKey);
                 } else {
                     $this->filter($QB, $metaFilter, $alias);
