@@ -76,7 +76,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param string $paramKey
      * @return string
      */
-    public function getFilterExp($expr, $alias, $filter, $paramKey)
+    public function getFilterExp(Expr $expr, string $alias, array $filter, string $paramKey): string
     {
         $operator = $filter['operator'];
         $property = $alias.'.'.$filter['property'];
@@ -149,7 +149,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param array $filter
      * @param string $paramKey
      */
-    public function addParam(&$QB, $filter, $paramKey)
+    public function addParam(QueryBuilder &$QB, array $filter, string $paramKey)
     {
         $operator = $filter['operator'];
         $value = $filter['value'];
@@ -181,7 +181,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param string $cond
      * @param string $paramKey
      */
-    public function addWhere(&$QB, $alias, $filter, $cond = self::COND_OR, $paramKey = '')
+    public function addWhere(QueryBuilder &$QB, $alias, $filter, string $cond = self::COND_OR, string $paramKey = '')
     {
         $expr = $QB->expr();
 
@@ -229,7 +229,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param array $join
      * @param string $rootAlias
      */
-    public function join(&$QB, $join, $rootAlias)
+    public function join(QueryBuilder &$QB, array $join, string $rootAlias)
     {
         foreach ($join as $relation) {
             $table = $relation['table'];
@@ -247,7 +247,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param array $sorts
      * @param string $alias
      */
-    public function sort(&$QB, $sorts, $alias)
+    public function sort(QueryBuilder &$QB, array $sorts, string $alias)
     {
         foreach ($sorts as $sort) {
             $sortBy = $sort['property'];
@@ -261,18 +261,18 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param string $alias
      * @return QueryBuilder
      */
-    public function createPaginateQueryBuilder($meta, $alias)
+    public function createPaginateQueryBuilder(array $meta, string $alias): QueryBuilder
     {
         $QB = $this->createQueryBuilder($alias);
 
         // join
-        $join = $meta['join'];
+        $join = $meta['join'] ?? [];
         $this->join($QB, $join, $alias);
         //sort
-        $sorts = $meta['sorts'];
+        $sorts = $meta['sorts'] ?? [];
         $this->sort($QB, $sorts, $alias);
         //filters
-        $filter = $meta['filter'];
+        $filter = $meta['filter'] ?? null;
         $this->filter($QB, $filter, $alias);
         //search
         $search = $meta['search'] ?? '';
@@ -285,7 +285,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
      * @param array $meta
      * @return array
      */
-    public function paginate($meta = []): array
+    public function paginate(array $meta = []): array
     {
         $pages = $page = 1;
 
@@ -297,13 +297,14 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
             $QB = $this->createPaginateQueryBuilder($meta, $alias);
 
             //pagination
-            $perPage = $meta['pagination']['perPage'];
-            $page = $meta['pagination']['page'];
+            $pagination = $meta['pagination'];
+            $perPage = $pagination['perPage'];
+            $page = $pagination['page'];
             $offset = max(0, ($page - 1) * $perPage);
             $QB
                 ->setFirstResult($offset)
-                ->setMaxResults($perPage);
-
+                ->setMaxResults($perPage)
+            ;
             $paginator = new Paginator($QB);
             $total = $paginator->count();
             $pages = $total/$perPage;

@@ -183,7 +183,7 @@ Type `string`, search in the target table root's properties
 
 ```json
 {
-	"search": "foo"
+  "search": "foo"
 }
 ```
 
