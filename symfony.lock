@@ -343,9 +343,6 @@
             "./config/routes.yaml"
         ]
     },
-    "symfony/runtime": {
-        "version": "v5.3.3"
-    },
     "symfony/service-contracts": {
         "version": "v2.4.0"
     },
