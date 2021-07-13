@@ -277,29 +277,23 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
     }
 
     /**
-     * @param array|null $meta
+     * @param string|null $search
+     * @param array|null $filter
+     * @param array|null $join
+     * @param array|null $sorts
+     * @param array|null $pagination
      * @return array
      */
-    public function all(?array $meta = []): array
+    public function all(?string $search, ?array $filter = [], ?array $join = [], ?array $sorts = [], ?array $pagination = []): array
     {
         $alias = 't1';
-
         $QB = $this->createQueryBuilder($alias);
 
-        // join
-        $join = $meta['join'] ?? [];
         $this->join($QB, $join, $alias);
-        //sort
-        $sorts = $meta['sorts'] ?? [];
         $this->sort($QB, $alias, $sorts);
-        //filters
-        $filter = $meta['filter'] ?? null;
         $this->filter($QB, $filter, $alias);
-        //search
-        $search = $meta['search'] ?? '';
         $this->search($QB, $search, $alias);
-        //pagination
-        $pagination = $meta['pagination'] ?? [];
+
         $perPage = $pagination['perPage'] ?? self::DEFAULT_PER_PAGE;
         $page = $pagination['page'] ?? 1;
         $this->paginate($QB, $page, $perPage);
