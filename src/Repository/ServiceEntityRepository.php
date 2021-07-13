@@ -81,6 +81,7 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
     {
         $operator = $filter['operator'];
         $property = $filter['property'];
+
         if (! strpos($property, '.')) {
             $property = $alias.'.'.$property;
         }
@@ -254,10 +255,10 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
 
     /**
      * @param QueryBuilder $QB
-     * @param array $sorts
+     * @param array|null $sorts
      * @param string $alias
      */
-    public function sort(QueryBuilder &$QB, array $sorts, string $alias)
+    public function sort(QueryBuilder &$QB, string $alias, ?array $sorts = [])
     {
         foreach ($sorts as $sort) {
             $sortBy = $sort['property'];
@@ -266,13 +267,23 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
         }
     }
 
-    /**
-     * @param array $meta
-     * @param string $alias
-     * @return QueryBuilder
-     */
-    public function createPaginateQueryBuilder(array $meta, string $alias): QueryBuilder
+    public function paginate(&$QB, $page, $perPage = self::DEFAULT_PER_PAGE)
     {
+        $offset = max(0, ($page - 1) * $perPage);
+        $QB
+            ->setFirstResult($offset)
+            ->setMaxResults($perPage)
+        ;
+    }
+
+    /**
+     * @param array|null $meta
+     * @return array
+     */
+    public function all(?array $meta = []): array
+    {
+        $alias = 't1';
+
         $QB = $this->createQueryBuilder($alias);
 
         // join
@@ -280,52 +291,27 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
         $this->join($QB, $join, $alias);
         //sort
         $sorts = $meta['sorts'] ?? [];
-        $this->sort($QB, $sorts, $alias);
-
+        $this->sort($QB, $alias, $sorts);
         //filters
         $filter = $meta['filter'] ?? null;
         $this->filter($QB, $filter, $alias);
-
         //search
         $search = $meta['search'] ?? '';
         $this->search($QB, $search, $alias);
+        //pagination
+        $pagination = $meta['pagination'] ?? [];
+        $perPage = $pagination['perPage'] ?? null;
+        $page = $pagination['page'] ?? null;
+        $this->paginate($QB, $page, $perPage);
 
-        return $QB;
-    }
+        $paginator = new Paginator($QB);
+        $total = $paginator->count();
+        $pages = $total/$perPage;
+        $pages = is_float($pages) ? (int)$pages+1 : $pages;
 
-    /**
-     * @param array $meta
-     * @return array
-     */
-    public function paginate(array $meta = []): array
-    {
-        $pages = $page = 1;
-
-        if (empty($meta)) {
-            $entities = $this->findAll();
-            $total = $perPage = count($entities);
-        } else {
-            $alias = 't1';
-            $QB = $this->createPaginateQueryBuilder($meta, $alias);
-
-            //pagination
-            $pagination = $meta['pagination'] ?? [];
-            $perPage = $pagination['perPage'] ?? self::DEFAULT_PER_PAGE;
-            $page = $pagination['page'] ?? 1;
-            $offset = max(0, ($page - 1) * $perPage);
-            $QB
-                ->setFirstResult($offset)
-                ->setMaxResults($perPage)
-            ;
-            $paginator = new Paginator($QB);
-            $total = $paginator->count();
-            $pages = $total/$perPage;
-            $pages = is_float($pages) ? (int)$pages+1 : $pages;
-
-            $entities = [];
-            foreach ($paginator as $entity) {
-                $entities[] = $entity;
-            }
+        $entities = [];
+        foreach ($paginator as $entity) {
+            $entities[] = $entity;
         }
 
         return [

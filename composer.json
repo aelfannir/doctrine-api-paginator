@@ -3,6 +3,7 @@
     "description": "Simple, powerful package for search, sort, filter & paginate database",
     "type": "symfony-bundle",
     "license": "MIT",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "App\\Tests\\": "tests/",
