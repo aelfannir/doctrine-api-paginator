@@ -204,8 +204,8 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
     public function filter(&$QB, $metaFilter, $alias)
     {
         if ($metaFilter) {
-            $filterOperator = $metaFilter['operator'];
-            $compoundFilters = $metaFilter['filters'];
+            $filterOperator = $metaFilter['operator'] ?? self::COND_AND;
+            $compoundFilters = $metaFilter['filters'] ?? [];
             foreach ($compoundFilters as $i=>$filter) {
                 $property = $filter['property'];
                 if ($property) {
