@@ -297,8 +297,8 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
         $this->filter($QB, $filter, $alias);
         $this->search($QB, $search, $alias);
 
-        $perPage = (int)$pagination['perPage'] ?? self::DEFAULT_PER_PAGE;
-        $page = (int)$pagination['page'] ?? 1;
+        $perPage = (int)($pagination['perPage'] ?? self::DEFAULT_PER_PAGE);
+        $page = (int)($pagination['page'] ?? 1);
         $this->paginate($QB, $page, $perPage);
 
         $paginator = new Paginator($QB);
