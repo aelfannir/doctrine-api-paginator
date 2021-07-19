@@ -224,13 +224,16 @@ class ServiceEntityRepository extends BaseServiceEntityRepository
     public function search(&$QB, $search, $alias)
     {
         if ($search) {
-            foreach ($this->getClassMetadata()->getFieldNames() as $fieldName) {
+            foreach ($this->getClassMetadata()->getFieldNames() as $k=>$fieldName) {
                 $paramKey = "{$alias}_$fieldName";
                 $expression = $QB->expr()->like("$alias.$fieldName", ":$paramKey");
-                $QB
-                    ->orWhere($expression)
-                    ->setParameter($paramKey, "%$search%")
-                ;
+                if ($k === 0) {
+                    $QB->andWhere($expression);
+                } else {
+                    $QB->orWhere($expression);
+                }
+
+                $QB->setParameter($paramKey, "%$search%");
             }
         }
     }
